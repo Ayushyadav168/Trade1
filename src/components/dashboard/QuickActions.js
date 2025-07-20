@@ -2,8 +2,10 @@
 
 import { Plus, ArrowUpDown, CreditCard, PieChart } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 
 export default function QuickActions() {
+  const router = useRouter();
   const actions = [
     {
       title: 'Buy Stocks',
@@ -42,13 +44,15 @@ export default function QuickActions() {
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 gap-3">
           {actions.map((action) => (
-            <Link key={action.title} href={action.href}>
-              <div className={`${action.color} text-white rounded-lg p-4 text-center transition-colors duration-200 cursor-pointer`}>
-                <action.icon className="h-6 w-6 mx-auto mb-2" />
-                <h3 className="text-sm font-medium">{action.title}</h3>
-                <p className="text-xs opacity-90">{action.description}</p>
-              </div>
-            </Link>
+            <button
+              key={action.title}
+              onClick={() => router.push(action.href)}
+              className={`${action.color} text-white rounded-lg p-4 text-center transition-colors duration-200 cursor-pointer w-full`}
+            >
+              <action.icon className="h-6 w-6 mx-auto mb-2" />
+              <h3 className="text-sm font-medium">{action.title}</h3>
+              <p className="text-xs opacity-90">{action.description}</p>
+            </button>
           ))}
         </div>
       </div>

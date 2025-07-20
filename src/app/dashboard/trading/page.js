@@ -2,14 +2,11 @@
 
 import { useState } from 'react'
 import { Search, TrendingUp, TrendingDown, Plus, Minus, AlertTriangle, DollarSign } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import DashboardNavbar from '../../../components/dashboard/DashboardNavbar'
 import { stocksData } from '@/data/stocksData'
+import Stats from '../../../components/Stats';
+import Testimonials from '../../../components/Testimonials';
+import Features from '../../../components/Features';
 
 export default function Trading() {
   const [activeTab, setActiveTab] = useState('buy')
@@ -42,7 +39,7 @@ export default function Trading() {
   return (
     <div className="min-h-screen bg-gray-50">
       <DashboardNavbar />
-      
+      <Stats />
       <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         {/* Page header */}
         <div className="mb-8">
@@ -54,23 +51,20 @@ export default function Trading() {
               <p className="mt-2 text-gray-600">Buy and sell stocks with real-time market data</p>
             </div>
             <div className="flex gap-3">
-              <Button 
-                variant={accountType === 'demo' ? 'default' : 'outline'}
+              <button 
                 onClick={() => setAccountType('demo')}
-                className={accountType === 'demo' ? 'bg-orange-500 hover:bg-orange-600' : ''}
+                className={`px-4 py-2 rounded-lg font-medium ${accountType === 'demo' ? 'bg-orange-500 hover:bg-orange-600' : ''}`}
               >
                 Demo Trading
-              </Button>
-              <Button 
-                variant={accountType === 'real' ? 'default' : 'outline'}
+              </button>
+              <button 
                 onClick={() => setAccountType('real')}
-                className={accountType === 'real' ? 'bg-green-500 hover:bg-green-600' : ''}
+                className={`px-4 py-2 rounded-lg font-medium ${accountType === 'real' ? 'bg-green-500 hover:bg-green-600' : ''}`}
               >
                 Live Trading
-              </Button>
+              </button>
             </div>
           </div>
-
           {/* Account Type Alert */}
           <div className={`mt-4 p-4 rounded-lg border-l-4 ${
             accountType === 'demo' 
@@ -97,30 +91,26 @@ export default function Trading() {
             </p>
           </div>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Stock List */}
           <div className="lg:col-span-2">
-            <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl font-semibold text-gray-900">Market</CardTitle>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Search className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <Input
-                      type="text"
-                      placeholder="Search stocks..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10"
-                    />
+            <div className="border-0 shadow-lg bg-white/80 backdrop-blur-sm rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xl font-semibold text-gray-900">Market</span>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-gray-400" />
                   </div>
+                  <input
+                    type="text"
+                    placeholder="Search stocks..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 py-2 border border-gray-300 rounded-md w-64"
+                  />
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              </div>
+              <div className="space-y-4">
                   {filteredStocks.slice(0, 20).map((stock) => (
                     <div
                       key={stock.symbol}
@@ -154,44 +144,32 @@ export default function Trading() {
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-
+              </div>
+            </div>
           {/* Trading Panel */}
           <div className="space-y-6">
             {/* Order Form */}
-            <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <DollarSign className="mr-2 h-5 w-5" />
-                  Quick Trade
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex space-x-1 mb-6">
-                  <Button
-                    onClick={() => setActiveTab('buy')}
-                    variant={activeTab === 'buy' ? 'default' : 'outline'}
-                    className={`flex-1 ${
-                      activeTab === 'buy' ? 'bg-green-500 hover:bg-green-600' : ''
-                    }`}
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Buy
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab('sell')}
-                    variant={activeTab === 'sell' ? 'default' : 'outline'}
-                    className={`flex-1 ${
-                      activeTab === 'sell' ? 'bg-red-500 hover:bg-red-600' : ''
-                    }`}
-                  >
-                    <Minus className="h-4 w-4 mr-1" />
-                    Sell
-                  </Button>
-                </div>
-
+            <div className="border-0 shadow-lg bg-white/80 backdrop-blur-sm rounded-xl p-6">
+              <div className="flex items-center mb-4">
+                <DollarSign className="mr-2 h-5 w-5" />
+                <span className="text-lg font-semibold text-gray-900">Quick Trade</span>
+              </div>
+              <div className="flex space-x-1 mb-6">
+                <button
+                  onClick={() => setActiveTab('buy')}
+                  className={`flex-1 px-4 py-2 rounded-lg font-medium ${activeTab === 'buy' ? 'bg-green-500 text-white hover:bg-green-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Buy
+                </button>
+                <button
+                  onClick={() => setActiveTab('sell')}
+                  className={`flex-1 px-4 py-2 rounded-lg font-medium ${activeTab === 'sell' ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                >
+                  <Minus className="h-4 w-4 mr-1" />
+                  Sell
+                </button>
+              </div>
                 {selectedStock ? (
                   <div className="space-y-4">
                     <div>
@@ -199,50 +177,47 @@ export default function Trading() {
                       <p className="text-sm text-gray-600">{selectedStock.name}</p>
                       <p className="text-xl font-semibold text-gray-900">₹{selectedStock.price}</p>
                     </div>
-
                     <div>
-                      <Label className="text-sm font-medium text-gray-700">
+                      <label className="text-sm font-medium text-gray-700 block mb-1">
                         Quantity
-                      </Label>
-                      <Input
+                      </label>
+                      <input
                         type="number"
                         placeholder="Enter quantity"
                         value={quantity}
                         onChange={(e) => setQuantity(e.target.value)}
+                        className="border border-gray-300 rounded-md px-3 py-2 w-full"
                       />
                     </div>
-
                     <div>
-                      <Label className="text-sm font-medium text-gray-700">
+                      <label className="text-sm font-medium text-gray-700 block mb-1">
                         Order Type
-                      </Label>
-                      <Select value={orderType} onValueChange={setOrderType}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="market">Market</SelectItem>
-                          <SelectItem value="limit">Limit</SelectItem>
-                          <SelectItem value="stop-loss">Stop Loss</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      </label>
+                      <select
+                        value={orderType}
+                        onChange={(e) => setOrderType(e.target.value)}
+                        className="border border-gray-300 rounded-md px-3 py-2 w-full"
+                      >
+                        <option value="market">Market</option>
+                        <option value="limit">Limit</option>
+                        <option value="stop-loss">Stop Loss</option>
+                      </select>
                     </div>
-
                     {orderType === 'limit' && (
                       <div>
-                        <Label className="text-sm font-medium text-gray-700">
+                        <label className="text-sm font-medium text-gray-700 block mb-1">
                           Price
-                        </Label>
-                        <Input
+                        </label>
+                        <input
                           type="number"
                           step="0.01"
                           placeholder="Enter price"
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
+                          className="border border-gray-300 rounded-md px-3 py-2 w-full"
                         />
                       </div>
                     )}
-
                     {/* Order Summary */}
                     {quantity && (
                       <div className="p-3 bg-gray-50 rounded-lg">
@@ -261,81 +236,29 @@ export default function Trading() {
                             <span className="font-medium">₹{selectedStock.price}</span>
                           </div>
                           <div className="flex justify-between border-t pt-1">
-                            <span>Total:</span>
-                            <span className="font-medium">₹{(selectedStock.price * parseInt(quantity || 0)).toLocaleString()}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Account:</span>
-                            <Badge variant={accountType === 'demo' ? 'secondary' : 'default'}>
-                              {accountType === 'demo' ? 'DEMO' : 'REAL'}
-                            </Badge>
+                            <span>Total Value:</span>
+                            <span className="font-medium">₹{(selectedStock.price * parseInt(quantity)).toLocaleString()}</span>
                           </div>
                         </div>
                       </div>
                     )}
-
-                    <Button
+                    <button
                       onClick={handlePlaceOrder}
-                      disabled={!quantity}
-                      className={`w-full ${
-                        activeTab === 'buy'
-                          ? 'bg-green-500 hover:bg-green-600'
-                          : 'bg-red-500 hover:bg-red-600'
-                      }`}
+                      className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                     >
-                      {activeTab === 'buy' ? 'Place Buy Order' : 'Place Sell Order'}
-                    </Button>
-
-                    {accountType === 'demo' && (
-                      <p className="text-xs text-orange-600 text-center">
-                        ⚠️ This order will be placed with demo money
-                      </p>
-                    )}
+                      Place Order
+                    </button>
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">Select a stock to start trading</p>
+                  <div className="text-gray-500 text-center py-8">
+                    <p>Select a stock to start trading</p>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Account Info */}
-            <Card className="border-0 shadow-lg bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-medium text-gray-900">Account Info</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Available Cash ({accountType})</span>
-                    <span className="font-semibold">
-                      ₹{accountType === 'demo' ? '1,00,000' : '25,000'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Used Margin</span>
-                    <span className="font-semibold">₹15,000</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Available Margin</span>
-                    <span className="font-semibold text-green-600">
-                      ₹{accountType === 'demo' ? '85,000' : '10,000'}
-                    </span>
-                  </div>
-                  <div className="pt-2 border-t">
-                    <Badge 
-                      variant={accountType === 'demo' ? 'secondary' : 'default'}
-                      className="w-full justify-center"
-                    >
-                      {accountType === 'demo' ? 'DEMO ACCOUNT' : 'LIVE ACCOUNT'}
-                    </Badge>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            </div>
           </div>
         </div>
+        <Features />
+        <Testimonials />
       </main>
     </div>
   )

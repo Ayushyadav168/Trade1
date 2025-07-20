@@ -2,8 +2,10 @@
 
 import { SignUpButton } from '@clerk/nextjs'
 import { ArrowRight, Play, Shield, Zap, BarChart3 } from 'lucide-react'
+import { useState } from 'react';
 
 export default function Hero() {
+  const [demoOpen, setDemoOpen] = useState(false);
   return (
     <div className="relative bg-gradient-to-b from-blue-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -63,7 +65,10 @@ export default function Hero() {
                   </SignUpButton>
                 </div>
                 <div className="mt-3 sm:mt-0 sm:ml-3">
-                  <button className="w-full flex items-center justify-center px-8 py-4 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 md:text-lg md:px-10 transition-all duration-200">
+                  <button
+                    className="w-full flex items-center justify-center px-8 py-4 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 md:text-lg md:px-10 transition-all duration-200"
+                    onClick={() => setDemoOpen(true)}
+                  >
                     <Play className="mr-2 h-5 w-5" />
                     Watch Demo
                   </button>
@@ -109,6 +114,36 @@ export default function Hero() {
           <div className="absolute bottom-20 left-10 w-16 h-16 bg-white bg-opacity-10 rounded-full"></div>
         </div>
       </div>
+      {/* Demo Video Modal */}
+      {demoOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full relative">
+            <button
+              onClick={() => setDemoOpen(false)}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <div className="aspect-w-16 aspect-h-9 w-full">
+              <iframe
+                width="100%"
+                height="400"
+                src="https://www.youtube.com/embed/2e1vGDlDbkA?autoplay=1"
+                title="AI Trading & Investing Demo"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="rounded-b-lg"
+              ></iframe>
+            </div>
+            <div className="p-4">
+              <h3 className="text-lg font-bold mb-2">AI-Ready Trading & Investing Demo</h3>
+              <p className="text-gray-600 text-sm">See how AI can help you make smarter trading and investing decisions. This demo covers portfolio analysis, stock screening, and more.</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

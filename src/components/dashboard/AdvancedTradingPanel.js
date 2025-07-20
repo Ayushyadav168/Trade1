@@ -8,6 +8,8 @@ export default function AdvancedTradingPanel() {
   const [orderType, setOrderType] = useState('market')
   const [transactionType, setTransactionType] = useState('buy')
   const [filterStatus, setFilterStatus] = useState('all')
+  const [actionModal, setActionModal] = useState({ open: false, action: '', position: null });
+  const [actionSuccess, setActionSuccess] = useState(false);
 
   // Sample orders data
   const orders = [
@@ -333,10 +335,14 @@ export default function AdvancedTradingPanel() {
                     </td>
                     <td className="text-center py-4 px-4">
                       <div className="flex items-center justify-center space-x-2">
-                        <button className="text-blue-600 hover:text-blue-800 text-xs font-medium">
+                        <button className="text-blue-600 hover:text-blue-800 text-xs font-medium"
+                          onClick={() => setActionModal({ open: true, action: 'Exit', position })}
+                        >
                           Exit
                         </button>
-                        <button className="text-gray-600 hover:text-gray-800 text-xs font-medium">
+                        <button className="text-gray-600 hover:text-gray-800 text-xs font-medium"
+                          onClick={() => setActionModal({ open: true, action: 'Convert', position })}
+                        >
                           Convert
                         </button>
                       </div>
@@ -394,6 +400,47 @@ export default function AdvancedTradingPanel() {
               </tbody>
             </table>
           </div>
+        </div>
+      )}
+      {/* Action Confirmation Modal */}
+      {actionModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-sm w-full relative animate-fade-in-up">
+            <button
+              onClick={() => setActionModal({ open: false, action: '', position: null })}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <div className="mb-4 text-lg font-bold text-gray-900">{actionModal.action} Position</div>
+            <div className="mb-4 text-gray-700">
+              Are you sure you want to <span className="font-semibold">{actionModal.action.toLowerCase()}</span> your position in <span className="font-semibold">{actionModal.position?.symbol}</span>?
+            </div>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setActionModal({ open: false, action: '', position: null })}
+                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setActionModal({ open: false, action: '', position: null });
+                  setActionSuccess(true);
+                  setTimeout(() => setActionSuccess(false), 2000);
+                }}
+                className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-md transition-all"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {actionSuccess && (
+        <div className="fixed bottom-8 right-8 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in-up">
+          Action completed successfully!
         </div>
       )}
     </div>

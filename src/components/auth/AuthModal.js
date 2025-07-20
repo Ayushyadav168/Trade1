@@ -16,8 +16,8 @@ export default function AuthModal({ isOpen, onClose, mode = 'signin' }) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const { signIn, setActive } = useSignIn()
-  const { signUp, setActive: setActiveSignUp } = useSignUp()
+  const { signIn, setActive, isLoaded: signInLoaded } = useSignIn()
+  const { signUp, setActive: setActiveSignUp, isLoaded: signUpLoaded } = useSignUp()
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -43,7 +43,11 @@ export default function AuthModal({ isOpen, onClose, mode = 'signin' }) {
         onClose()
       }
     } catch (err) {
-      setError(err.errors[0]?.message || 'Sign in failed')
+      setError(
+        Array.isArray(err.errors) && err.errors[0]?.message
+          ? err.errors[0].message
+          : err.message || 'Sign in failed'
+      );
     } finally {
       setIsLoading(false)
     }
@@ -70,7 +74,11 @@ export default function AuthModal({ isOpen, onClose, mode = 'signin' }) {
         setError('Please check your email for verification')
       }
     } catch (err) {
-      setError(err.errors[0]?.message || 'Sign up failed')
+      setError(
+        Array.isArray(err.errors) && err.errors[0]?.message
+          ? err.errors[0].message
+          : err.message || 'Sign up failed'
+      );
     } finally {
       setIsLoading(false)
     }
@@ -82,12 +90,14 @@ export default function AuthModal({ isOpen, onClose, mode = 'signin' }) {
 
     try {
       if (authMode === 'signin') {
+        if (!signInLoaded || !signIn) throw new Error('Sign-in not ready. Please try again.')
         await signIn.authenticateWithRedirect({
           strategy: 'oauth_google',
           redirectUrl: '/dashboard',
           redirectUrlComplete: '/dashboard',
         })
       } else {
+        if (!signUpLoaded || !signUp) throw new Error('Sign-up not ready. Please try again.')
         await signUp.authenticateWithRedirect({
           strategy: 'oauth_google',
           redirectUrl: '/dashboard',
@@ -95,8 +105,13 @@ export default function AuthModal({ isOpen, onClose, mode = 'signin' }) {
         })
       }
     } catch (err) {
-      setError(err.errors[0]?.message || 'Google authentication failed')
-      setIsLoading(false)
+      console.error('Google Auth Error:', err);
+      setError(
+        Array.isArray(err.errors) && err.errors[0]?.message
+          ? err.errors[0].message
+          : err.message || 'Google authentication failed. Please check your network and try again, or contact support if the problem persists.'
+      );
+      setIsLoading(false);
     }
   }
 
@@ -122,11 +137,18 @@ export default function AuthModal({ isOpen, onClose, mode = 'signin' }) {
           {/* Google Sign In Button */}
           <button
             onClick={handleGoogleAuth}
-            disabled={isLoading}
+            disabled={isLoading || !signInLoaded || !signUpLoaded}
             className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-6"
           >
             <Chrome className="h-5 w-5 mr-3 text-blue-600" />
-            {authMode === 'signin' ? 'Sign in' : 'Sign up'} with Google
+            {isLoading ? (
+              <span className="flex items-center">
+                <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></span>
+                {authMode === 'signin' ? 'Signing in...' : 'Signing up...'}
+              </span>
+            ) : (
+              <>{authMode === 'signin' ? 'Sign in' : 'Sign up'} with Google</>
+            )}
           </button>
 
           {/* Divider */}

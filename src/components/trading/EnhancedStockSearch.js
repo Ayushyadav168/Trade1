@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { TrendingUp, TrendingDown, Search, Filter, BarChart3, Target, Eye, Star, Clock, Activity, DollarSign, Zap, Info } from 'lucide-react'
 import AISuggestionButton from '../AISuggestionButton'
 import DetailedInfoModal from '../DetailedInfoModal'
+import OrderModal from './OrderModal';
 
 export default function EnhancedStockSearch() {
   const [stocks, setStocks] = useState([])
@@ -21,6 +22,9 @@ export default function EnhancedStockSearch() {
     volume: 'all'
   })
   const [sortBy, setSortBy] = useState('volume')
+  const [orderModal, setOrderModal] = useState({ open: false, stock: null, type: 'BUY' });
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [chartModal, setChartModal] = useState({ open: false, stock: null });
 
   // Enhanced stock data with more options
   const stockData = [
@@ -441,13 +445,19 @@ export default function EnhancedStockSearch() {
 
         {/* Actions */}
         <div className="flex flex-col space-y-3">
-          <button className="btn-primary flex items-center justify-center">
+          <button
+            className="btn-primary flex items-center justify-center"
+            onClick={() => setOrderModal({ open: true, stock, type: 'BUY' })}
+          >
             <Target className="h-4 w-4 mr-2" />
             Buy
           </button>
-          <button className="btn-secondary flex items-center justify-center">
+          <button
+            className="btn-secondary flex items-center justify-center"
+            onClick={() => setOrderModal({ open: true, stock, type: 'SELL' })}
+          >
             <Zap className="h-4 w-4 mr-2" />
-            Quick Trade
+            Sell
           </button>
           <button 
             onClick={() => handleInfoClick(stock)}
@@ -457,7 +467,9 @@ export default function EnhancedStockSearch() {
             Detailed Info
           </button>
           <AISuggestionButton data={stock} type="stock" />
-          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center justify-center">
+          <button className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center justify-center"
+            onClick={() => setChartModal({ open: true, stock })}
+          >
             <BarChart3 className="h-4 w-4 mr-1" />
             View Chart
           </button>
@@ -539,9 +551,9 @@ export default function EnhancedStockSearch() {
                   className="input-field text-sm"
                 >
                   <option value="all">All Caps</option>
-                  <option value="large">Large Cap (>₹2L Cr)</option>
-                  <option value="mid">Mid Cap (₹50K-2L Cr)</option>
-                  <option value="small">Small Cap (<₹50K Cr)</option>
+                  <option value="large">Large Cap (&gt;&#8377;2L Cr)</option>
+                  <option value="mid">Mid Cap (&#8377;50K-2L Cr)</option>
+                  <option value="small">Small Cap (&lt;&#8377;50K Cr)</option>
                 </select>
               </div>
 
@@ -637,6 +649,44 @@ export default function EnhancedStockSearch() {
         data={selectedInfo}
         type="stock"
       />
+      <OrderModal
+        isOpen={orderModal.open}
+        onClose={() => setOrderModal({ open: false, stock: null, type: 'BUY' })}
+        stock={orderModal.stock}
+        transactionType={orderModal.type}
+        onSuccess={() => {
+          setOrderModal({ open: false, stock: null, type: 'BUY' });
+          setOrderSuccess(true);
+          setTimeout(() => setOrderSuccess(false), 2000);
+        }}
+      />
+      {orderSuccess && (
+        <div className="fixed bottom-8 right-8 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in-up">
+          Order placed successfully!
+        </div>
+      )}
+      {/* Chart Modal */}
+      {chartModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full relative animate-fade-in-up">
+            <button
+              onClick={() => setChartModal({ open: false, stock: null })}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <div className="mb-4 flex items-center gap-2">
+              <BarChart3 className="h-6 w-6 text-blue-600" />
+              <span className="font-bold text-blue-700">{chartModal.stock?.symbol} Chart</span>
+            </div>
+            <div className="h-64 flex items-center justify-center bg-blue-50 rounded-lg">
+              {/* Placeholder chart - replace with real chart as needed */}
+              <span className="text-gray-500">[Chart for {chartModal.stock?.symbol}]</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

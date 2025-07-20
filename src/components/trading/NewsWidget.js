@@ -101,9 +101,11 @@ export default function NewsWidget() {
       case 'high': return 'text-orange-600 bg-orange-100'
       case 'neutral': return 'text-gray-600 bg-gray-100'
       case 'mixed': return 'text-purple-600 bg-purple-100'
-      return colors[sector] || 'text-gray-600 bg-gray-100'
+      default: return 'text-gray-600 bg-gray-100'
+    }
   }
 
+  // Move generateMarketInsights here
   const generateMarketInsights = async () => {
     setLoadingInsights(true)
     try {
@@ -116,7 +118,6 @@ export default function NewsWidget() {
     } finally {
       setLoadingInsights(false)
     }
-  }
   }
 
   const getCategoryIcon = (category) => {

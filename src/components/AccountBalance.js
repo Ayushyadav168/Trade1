@@ -1,18 +1,17 @@
 'use client'
 
 import { useState } from 'react'
-import { Wallet, CreditCard, Play, DollarSign, Plus, ArrowUpRight, ArrowDownRight, Eye, EyeOff } from 'lucide-react'
-// Removed imports for missing UI components. Will use plain HTML and Tailwind CSS instead.
+import { Wallet, CreditCard, Play, DollarSign, Plus, ArrowUpRight, Eye, EyeOff } from 'lucide-react'
 
 export default function AccountBalance() {
   const [showBalance, setShowBalance] = useState(true)
   const [addFundsModal, setAddFundsModal] = useState(false)
   const [fundAmount, setFundAmount] = useState('')
-  const [fundType, setFundType] = useState('demo') // demo or real
+  const [fundType, setFundType] = useState('demo')
   const [currentMode, setCurrentMode] = useState('demo')
   const [accountData, setAccountData] = useState({
-    demoBalance: 100000, // ₹1,00,000 demo money
-    realBalance: 0, // ₹0 real money initially
+    demoBalance: 100000,
+    realBalance: 0,
     totalInvested: 0,
     currentValue: 0,
     totalPnL: 0,
@@ -20,40 +19,22 @@ export default function AccountBalance() {
   })
 
   const handleAddFunds = () => {
-    if (!fundAmount || parseFloat(fundAmount) <= 0) {
+    const amount = parseFloat(fundAmount)
+    if (!amount || amount <= 0) {
       alert('Please enter a valid amount')
       return
     }
-    
-    const amount = parseFloat(fundAmount)
-    if (fundType === 'demo') {
-      setAccountData(prev => ({
-        ...prev,
-        demoBalance: prev.demoBalance + amount
-      }))
-    } else {
-      setAccountData(prev => ({
-        ...prev,
-        realBalance: prev.realBalance + amount
-      }))
-    }
-    
+    setAccountData(prev => ({
+      ...prev,
+      [fundType === 'demo' ? 'demoBalance' : 'realBalance']: prev[fundType === 'demo' ? 'demoBalance' : 'realBalance'] + amount
+    }))
     setAddFundsModal(false)
     setFundAmount('')
     alert(`₹${amount.toLocaleString()} added to your ${fundType} account successfully!`)
   }
 
-  const handleToggleMode = (mode) => {
-    setCurrentMode(mode)
-  }
-
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0
-    }).format(amount)
-  }
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(amount)
 
   return (
     <div className="border-0 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl p-6">
@@ -74,14 +55,13 @@ export default function AccountBalance() {
                 <Play className="h-5 w-5 mr-2" />
                 <span className="font-medium">Demo Account</span>
               </div>
-              <button 
+              <button
                 onClick={() => setShowBalance(!showBalance)}
                 className="text-orange-100 hover:text-white transition-colors"
               >
                 {showBalance ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            
             <div className="space-y-2">
               <div className="text-sm text-orange-100">Available Balance</div>
               <div className="text-2xl font-bold">
@@ -93,7 +73,6 @@ export default function AccountBalance() {
               </div>
             </div>
           </div>
-
           {/* Real Account */}
           <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
@@ -101,14 +80,13 @@ export default function AccountBalance() {
                 <Wallet className="h-5 w-5 mr-2" />
                 <span className="font-medium">Trading Account</span>
               </div>
-              <button 
+              <button
                 onClick={() => setShowBalance(!showBalance)}
                 className="text-blue-100 hover:text-white transition-colors"
               >
                 {showBalance ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            
             <div className="space-y-2">
               <div className="text-sm text-blue-100">Available Balance</div>
               <div className="text-2xl font-bold">
@@ -121,7 +99,6 @@ export default function AccountBalance() {
             </div>
           </div>
         </div>
-
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <button
@@ -131,22 +108,19 @@ export default function AccountBalance() {
             <Plus className="h-4 w-4 mr-2" />
             Add Funds
           </button>
-          
           <button
-            onClick={() => handleToggleMode('demo')}
+            onClick={() => setCurrentMode('demo')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center ${currentMode === 'demo' ? 'bg-orange-500 text-white hover:bg-orange-600' : 'border border-orange-500 text-orange-500 hover:bg-orange-50 bg-white'}`}
           >
             Practice Mode
           </button>
-          
           <button
-            onClick={() => handleToggleMode('real')}
+            onClick={() => setCurrentMode('real')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center ${currentMode === 'real' ? 'bg-blue-500 text-white hover:bg-blue-600' : 'border border-blue-500 text-blue-500 hover:bg-blue-50 bg-white'}`}
           >
             Live Trading
           </button>
         </div>
-
         {/* Portfolio Summary */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
           <h4 className="font-medium text-gray-900 mb-3">Portfolio Summary</h4>
@@ -177,13 +151,11 @@ export default function AccountBalance() {
             </div>
           </div>
         </div>
-
         {/* Add Funds Modal */}
         {addFundsModal && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg p-6 max-w-md w-full">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Add Funds</h3>
-              
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-2">Fund Type</label>
@@ -212,7 +184,6 @@ export default function AccountBalance() {
                     </button>
                   </div>
                 </div>
-
                 <div>
                   <label className="text-sm font-medium text-gray-700 mb-1">Amount</label>
                   <input
@@ -224,7 +195,6 @@ export default function AccountBalance() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
-
                 {fundType === 'demo' && (
                   <div className="bg-orange-50 p-3 rounded-lg">
                     <p className="text-sm text-orange-700">
@@ -232,7 +202,6 @@ export default function AccountBalance() {
                     </p>
                   </div>
                 )}
-
                 {fundType === 'real' && (
                   <div className="bg-blue-50 p-3 rounded-lg">
                     <p className="text-sm text-blue-700">
@@ -241,7 +210,6 @@ export default function AccountBalance() {
                   </div>
                 )}
               </div>
-
               <div className="flex space-x-3 mt-6">
                 <button
                   onClick={() => setAddFundsModal(false)}

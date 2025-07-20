@@ -1,10 +1,20 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY || 'AIzaSyBm0nZSuQKFPF6XYuv1Ft5DhwKnocnp2to')
-
 export class GeminiService {
-  constructor() {
-    this.model = genAI.getGenerativeModel({ model: 'gemini-pro' })
+  // Use API route for chat (browser-safe)
+  async chatWithAI(message) {
+    try {
+      const res = await fetch('/api/ai-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message }),
+      });
+      const data = await res.json();
+      return data.text;
+    } catch (error) {
+      console.error('Error with AI chat API:', error);
+      return 'Sorry, I could not process your request right now.';
+    }
   }
 
   async getStockAnalysis(stockData) {

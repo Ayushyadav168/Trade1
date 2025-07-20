@@ -462,28 +462,6 @@ export default function MarketOverview() {
         )}
       </div>
 
-      {/* Quick Stats Footer */}
-      <div className="border-t border-gray-200 p-4 bg-gray-50">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-          <div>
-            <p className="text-xs text-gray-600">Advance/Decline</p>
-            <p className="text-sm font-medium text-gray-900">1,245/876</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-600">52W High/Low</p>
-            <p className="text-sm font-medium text-gray-900">234/145</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-600">Market Cap</p>
-            <p className="text-sm font-medium text-gray-900">₹285.6L Cr</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-600">Last Updated</p>
-            <p className="text-sm font-medium text-gray-900">3:30 PM</p>
-          </div>
-        </div>
-      </div>
-
       {/* Detailed Info Modal */}
       <DetailedInfoModal
         isOpen={infoModalOpen}

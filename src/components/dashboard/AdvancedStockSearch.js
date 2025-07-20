@@ -2,12 +2,20 @@
 
 import { useState, useEffect } from 'react'
 import { Search, Filter, TrendingUp, TrendingDown, Star, Eye, Plus } from 'lucide-react'
+import OrderModal from '../trading/OrderModal';
+import DetailedInfoModal from '../DetailedInfoModal';
+import AISuggestionButton from '../AISuggestionButton';
 
 export default function AdvancedStockSearch() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('volume')
   const [filterBy, setFilterBy] = useState('all')
   const [watchlist, setWatchlist] = useState([])
+  const [orderModal, setOrderModal] = useState({ open: false, stock: null, type: 'BUY' });
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [chartModal, setChartModal] = useState({ open: false, stock: null });
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [selectedInfo, setSelectedInfo] = useState(null);
   
   // Enhanced mock stock data with more details
   const stocks = [
@@ -271,16 +279,32 @@ export default function AdvancedStockSearch() {
 
               {/* Action Buttons */}
               <div className="mt-4 flex space-x-2">
-                <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                <button
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  onClick={() => setOrderModal({ open: true, stock, type: 'BUY' })}
+                >
                   Buy
                 </button>
-                <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  onClick={() => setOrderModal({ open: true, stock, type: 'SELL' })}
+                >
                   Sell
                 </button>
-                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center">
+                <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center"
+                  onClick={() => setChartModal({ open: true, stock })}
+                >
                   <Eye className="h-4 w-4 mr-1" />
                   Chart
                 </button>
+                <button
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center"
+                  onClick={() => { setSelectedInfo(stock); setInfoModalOpen(true); }}
+                >
+                  <Eye className="h-4 w-4 mr-1" />
+                  Detailed Info
+                </button>
+                <AISuggestionButton data={stock} type="stock" />
               </div>
             </div>
           )
@@ -310,6 +334,50 @@ export default function AdvancedStockSearch() {
           <p className="text-lg font-semibold text-blue-600">{watchlist.length}</p>
         </div>
       </div>
+      <OrderModal
+        isOpen={orderModal.open}
+        onClose={() => setOrderModal({ open: false, stock: null, type: 'BUY' })}
+        stock={orderModal.stock}
+        transactionType={orderModal.type}
+        onSuccess={() => {
+          setOrderModal({ open: false, stock: null, type: 'BUY' });
+          setOrderSuccess(true);
+          setTimeout(() => setOrderSuccess(false), 2000);
+        }}
+      />
+      {orderSuccess && (
+        <div className="fixed bottom-8 right-8 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fade-in-up">
+          Order placed successfully!
+        </div>
+      )}
+      {/* Chart Modal */}
+      {chartModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full relative animate-fade-in-up">
+            <button
+              onClick={() => setChartModal({ open: false, stock: null })}
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl"
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            <div className="mb-4 flex items-center gap-2">
+              <Eye className="h-6 w-6 text-blue-600" />
+              <span className="font-bold text-blue-700">{chartModal.stock?.symbol} Chart</span>
+            </div>
+            <div className="h-64 flex items-center justify-center bg-blue-50 rounded-lg">
+              {/* Placeholder chart - replace with real chart as needed */}
+              <span className="text-gray-500">[Chart for {chartModal.stock?.symbol}]</span>
+            </div>
+          </div>
+        </div>
+      )}
+      <DetailedInfoModal
+        isOpen={infoModalOpen}
+        onClose={() => setInfoModalOpen(false)}
+        data={selectedInfo}
+        type="stock"
+      />
     </div>
   )
 }

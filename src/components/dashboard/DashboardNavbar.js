@@ -1,16 +1,16 @@
 'use client'
 
 import { useUser, SignOutButton } from '@clerk/nextjs'
-import { Bell, Search, Menu, User, LogOut, Settings, TrendingUp } from 'lucide-react'
-import { useState } from 'react'
+import { Bell, Search, Menu, User, LogOut, Settings, TrendingUp, Lightbulb, Briefcase } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-export default function DashboardNavbar() {
+export default function DashboardNavbar({ onBestInvestorsClick, onPortfolioClick }) {
   const { user } = useUser()
   const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <nav className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Navigation */}
@@ -60,6 +60,27 @@ export default function DashboardNavbar() {
             {/* Notifications */}
             <button className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
               <Bell className="h-6 w-6" />
+            </button>
+
+            {/* Portfolio Button */}
+            <button
+              onClick={onPortfolioClick}
+              className="p-2 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 font-semibold flex items-center gap-2 transition-colors"
+              title="See Portfolio"
+            >
+              <Briefcase className="h-5 w-5" />
+              Portfolio
+            </button>
+
+            {/* Best Investors Button */}
+            <button
+              onClick={onBestInvestorsClick}
+              className="p-2 rounded-lg bg-gradient-to-r from-yellow-400 via-pink-400 to-purple-500 text-white font-bold flex items-center gap-2 shadow-md hover:scale-105 hover:shadow-xl transition-all duration-200 border-2 border-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2"
+              style={{ minWidth: '140px' }}
+              title="See Best Investors"
+            >
+              <Lightbulb className="h-6 w-6 text-white drop-shadow" />
+              Best Investors
             </button>
 
             {/* Profile dropdown */}
