@@ -405,6 +405,12 @@ export default function Dashboard() {
       case 'news':
         return <NewsWidget />;
 
+      case 'performance':
+        return <PerformanceMonitor />;
+
+      case 'promotion':
+        return <WebsitePromotion />;
+
       case 'bookings':
         return <MeetingBookingSystem />;
 
