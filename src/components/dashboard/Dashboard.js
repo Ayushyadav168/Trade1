@@ -417,6 +417,7 @@ export default function Dashboard() {
     ['portfolio', 'Portfolio Analytics'],
     ['trading', 'Trading Panel'],
     ['screener', 'Stock Screener'],
+    ['properties', 'Property Management'],
     ['market', 'Market Overview'],
     ['news', 'Market News'],
     ['ai', 'AI Features'],
