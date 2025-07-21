@@ -197,60 +197,144 @@ export default function PropertyManagement() {
   }
 
   const PropertyCard = ({ property }) => (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-      <div className="relative">
+    <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden group">
+      <div className="relative overflow-hidden">
         <img 
           src={property.images[0]} 
           alt={property.title}
-          className="w-full h-48 object-cover"
+          className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300"
         />
+        
+        {/* Premium Badge */}
+        {property.category === 'Premium' && (
+          <div className="absolute top-3 left-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-3 py-1 rounded-full text-xs font-bold">
+            🏆 PREMIUM
+          </div>
+        )}
+        {property.category === 'Luxury' && (
+          <div className="absolute top-3 left-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+            👑 LUXURY
+          </div>
+        )}
+        
         <button
           onClick={() => handleFavorite(property.id)}
-          className={`absolute top-3 right-3 p-2 rounded-full ${
-            favorites.includes(property.id) ? 'bg-red-500 text-white' : 'bg-white text-gray-600'
-          } hover:scale-110 transition-transform`}
+          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-sm ${
+            favorites.includes(property.id) 
+              ? 'bg-red-500 text-white' 
+              : 'bg-white/80 text-gray-600'
+          } hover:scale-110 transition-all duration-200 shadow-lg`}
         >
-          <Heart className="h-4 w-4" fill={favorites.includes(property.id) ? 'white' : 'none'} />
+          <Heart className="h-5 w-5" fill={favorites.includes(property.id) ? 'white' : 'none'} />
         </button>
-        <div className="absolute bottom-3 left-3 bg-black bg-opacity-60 text-white px-2 py-1 rounded text-xs">
-          {property.type}
+        
+        <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center">
+          <div className="bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium">
+            {property.type}
+          </div>
+          <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm text-gray-800 px-2 py-1 rounded-full text-xs">
+            <Eye className="h-3 w-3" />
+            {property.views} views
+          </div>
         </div>
       </div>
 
-      <div className="p-4">
-        <h3 className="font-semibold text-lg text-gray-900 mb-2">{property.title}</h3>
-        <div className="flex items-center text-gray-600 mb-2">
-          <MapPin className="h-4 w-4 mr-1" />
-          <span className="text-sm">{property.location}</span>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2 mb-3 text-sm text-gray-600">
-          <div>{property.bhk}</div>
-          <div>{property.sqft} sqft</div>
-        </div>
-
-        <div className="flex justify-between items-center mb-3">
-          <div>
-            <div className="text-lg font-bold text-green-600">{formatPrice(property.price)}</div>
-            <div className="text-sm text-gray-500">Rent: ₹{property.rentPrice.toLocaleString()}/month</div>
-          </div>
-          <div className="text-right">
-            <div className="text-sm text-blue-600">ROI: {property.roi}%</div>
-            <div className="text-xs text-green-600">+{property.appreciation}% appreciation</div>
+      <div className="p-6">
+        <div className="mb-3">
+          <h3 className="font-bold text-xl text-gray-900 mb-2 line-clamp-1">{property.title}</h3>
+          <div className="flex items-center text-gray-600 mb-2">
+            <MapPin className="h-4 w-4 mr-1 text-blue-600" />
+            <span className="text-sm">{property.location}</span>
           </div>
         </div>
 
+        {/* Property Stats Grid */}
+        <div className="grid grid-cols-3 gap-2 mb-4 text-sm">
+          <div className="text-center bg-blue-50 rounded-lg p-2">
+            <div className="font-semibold text-blue-700">{property.bhk}</div>
+            <div className="text-xs text-gray-600">Configuration</div>
+          </div>
+          <div className="text-center bg-green-50 rounded-lg p-2">
+            <div className="font-semibold text-green-700">{property.sqft}</div>
+            <div className="text-xs text-gray-600">Sq Ft</div>
+          </div>
+          <div className="text-center bg-purple-50 rounded-lg p-2">
+            <div className="font-semibold text-purple-700">₹{(property.pricePerSqft/1000).toFixed(1)}K</div>
+            <div className="text-xs text-gray-600">Per Sq Ft</div>
+          </div>
+        </div>
+
+        {/* Price Section */}
+        <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-4 mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <div>
+              <div className="text-2xl font-bold text-green-700">{formatPrice(property.price)}</div>
+              <div className="text-sm text-gray-600">Sale Price</div>
+            </div>
+            <div className="text-right">
+              <div className="text-lg font-semibold text-blue-700">₹{property.rentPrice.toLocaleString()}</div>
+              <div className="text-xs text-gray-600">Monthly Rent</div>
+            </div>
+          </div>
+          
+          <div className="flex justify-between items-center pt-2 border-t border-gray-200">
+            <div className="text-center">
+              <div className="text-sm font-semibold text-blue-600">{property.roi.toFixed(1)}% ROI</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm font-semibold text-green-600">+{property.appreciation.toFixed(1)}% Growth</div>
+            </div>
+            <div className="text-center">
+              <div className="text-sm font-semibold text-purple-600">₹{(property.emi/1000).toFixed(0)}K EMI</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-1">
+            {property.features.slice(0, 3).map((feature, idx) => (
+              <span key={idx} className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
+                ✓ {feature}
+              </span>
+            ))}
+            {property.features.length > 3 && (
+              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">
+                +{property.features.length - 3} more
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Agent Info */}
+        <div className="bg-gray-50 rounded-lg p-3 mb-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-semibold text-gray-900">{property.agent.name}</div>
+              <div className="text-xs text-gray-600">{property.agent.speciality}</div>
+            </div>
+            <div className="text-right">
+              <div className="flex items-center gap-1">
+                <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                <span className="text-xs font-medium">{property.agent.rating.toFixed(1)}</span>
+              </div>
+              <div className="text-xs text-gray-600">{property.agent.experience}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
         <div className="flex gap-2">
           <button
             onClick={() => setSelectedProperty(property)}
-            className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-blue-700 flex items-center justify-center gap-2"
+            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-lg text-sm font-semibold hover:from-blue-700 hover:to-blue-800 flex items-center justify-center gap-2 transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             <Eye className="h-4 w-4" />
             View Details
           </button>
           <button
             onClick={() => handleBookVisit(property)}
-            className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-green-700 flex items-center justify-center gap-2"
+            className="flex-1 bg-gradient-to-r from-green-600 to-green-700 text-white py-3 px-4 rounded-lg text-sm font-semibold hover:from-green-700 hover:to-green-800 flex items-center justify-center gap-2 transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             <Calendar className="h-4 w-4" />
             Book Visit
