@@ -27,6 +27,9 @@ import AIWatchlist from './AIWatchlist';
 // Property Management
 import PropertyManagement from '../property/PropertyManagement';
 
+// Meeting Booking System
+import MeetingBookingSystem from '../booking/MeetingBookingSystem';
+
 // Account/KYC
 import KYCStatus from '../KYCStatus';
 import AccountBalance from '../AccountBalance';
