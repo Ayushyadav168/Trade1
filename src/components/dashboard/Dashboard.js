@@ -30,6 +30,10 @@ import PropertyManagement from '../property/PropertyManagement';
 // Meeting Booking System
 import MeetingBookingSystem from '../booking/MeetingBookingSystem';
 
+// Performance & Promotion Components
+import PerformanceMonitor from '../performance/PerformanceMonitor';
+import WebsitePromotion from '../promotion/WebsitePromotion';
+
 // Account/KYC
 import KYCStatus from '../KYCStatus';
 import AccountBalance from '../AccountBalance';
