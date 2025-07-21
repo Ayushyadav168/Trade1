@@ -424,6 +424,7 @@ export default function Dashboard() {
     ['trading', 'Trading Panel'],
     ['screener', 'Stock Screener'],
     ['properties', 'Property Management'],
+    ['bookings', 'Meeting Bookings'],
     ['market', 'Market Overview'],
     ['news', 'Market News'],
     ['ai', 'AI Features'],
