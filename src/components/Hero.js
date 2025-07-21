@@ -129,17 +129,40 @@ export default function Hero() {
               <iframe
                 width="100%"
                 height="400"
-                src="https://www.youtube.com/embed/2e1vGDlDbkA?autoplay=1"
-                title="AI Trading & Investing Demo"
+                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0&modestbranding=1"
+                title="TradePro - Complete Investment Platform Demo"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 className="rounded-b-lg"
               ></iframe>
             </div>
-            <div className="p-4">
-              <h3 className="text-lg font-bold mb-2">AI-Ready Trading & Investing Demo</h3>
-              <p className="text-gray-600 text-sm">See how AI can help you make smarter trading and investing decisions. This demo covers portfolio analysis, stock screening, and more.</p>
+            <div className="p-6 bg-gradient-to-r from-blue-50 to-purple-50">
+              <h3 className="text-xl font-bold mb-3 text-gray-900">🚀 Complete Investment Platform Demo</h3>
+              <p className="text-gray-700 text-sm mb-4">
+                Discover how TradePro revolutionizes your investment journey with AI-powered insights, 
+                comprehensive property management, and seamless trading experience. Watch how our platform 
+                combines stocks, mutual funds, ETFs, and real estate investments in one powerful interface.
+              </p>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>AI-Powered Analysis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span>Property Management</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                  <span>Expert Consultations</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <span>Zero Brokerage Trading</span>
+                </div>
+              </div>
+            </div>
             </div>
           </div>
         </div>
