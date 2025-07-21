@@ -37,6 +37,9 @@ export default function DashboardNavbar({ onBestInvestorsClick, onPortfolioClick
                 <Link href="/dashboard/portfolio" className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                   Portfolio
                 </Link>
+                <Link href="/dashboard" onClick={() => window.location.hash = 'properties'} className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                  Properties
+                </Link>
               </div>
             </div>
           </div>
