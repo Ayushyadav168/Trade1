@@ -246,54 +246,127 @@ export default function MeetingBookingSystem() {
   }
 
   const ConsultantCard = ({ consultant }) => (
-    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-      <div className="flex items-start gap-4">
-        <img
-          src={consultant.image}
-          alt={consultant.name}
-          className="w-16 h-16 rounded-full object-cover"
-        />
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">{consultant.name}</h3>
-          <p className="text-blue-600 font-medium">{consultant.type}</p>
-          <p className="text-gray-600 text-sm mt-1">{consultant.specialization}</p>
+    <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden">
+      {/* Premium Badge */}
+      {consultant.premium && (
+        <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-center py-1 text-xs font-bold">
+          ⭐ PREMIUM CONSULTANT
+        </div>
+      )}
+      
+      <div className="p-6">
+        <div className="flex items-start gap-4 mb-4">
+          <div className="relative">
+            <img
+              src={consultant.image}
+              alt={consultant.name}
+              className="w-20 h-20 rounded-full object-cover border-4 border-blue-100"
+            />
+            {consultant.verified && (
+              <div className="absolute -bottom-1 -right-1 bg-green-500 rounded-full p-1">
+                <CheckCircle className="h-4 w-4 text-white" />
+              </div>
+            )}
+          </div>
           
-          <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
-            <div className="flex items-center">
-              <span className="text-yellow-400">★</span>
-              <span className="ml-1">{consultant.rating}</span>
+          <div className="flex-1">
+            <h3 className="text-xl font-bold text-gray-900">{consultant.name}</h3>
+            <p className="text-blue-600 font-semibold text-sm">{consultant.type}</p>
+            <p className="text-gray-600 text-sm mt-1 line-clamp-2">{consultant.specialization}</p>
+            
+            <div className="flex items-center gap-4 mt-2">
+              <div className="flex items-center gap-1">
+                <span className="text-yellow-400 text-lg">★</span>
+                <span className="font-semibold text-gray-800">{consultant.rating}</span>
+                <span className="text-gray-500 text-sm">({consultant.clientsServed}+ clients)</span>
+              </div>
+              <span className="text-green-600 text-sm font-medium">{consultant.availability}</span>
             </div>
-            <span>{consultant.experience}</span>
           </div>
+        </div>
 
-          <div className="flex items-center gap-2 mt-3 text-sm text-gray-600">
+        {/* Enhanced Details */}
+        <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
+          <div className="bg-blue-50 rounded-lg p-3">
+            <div className="text-blue-600 font-semibold">Experience</div>
+            <div className="text-gray-800">{consultant.experience}</div>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <div className="text-green-600 font-semibold">Success Rate</div>
+            <div className="text-gray-800">{consultant.successRate}%</div>
+          </div>
+          <div className="bg-purple-50 rounded-lg p-3">
+            <div className="text-purple-600 font-semibold">Fee</div>
+            <div className="text-gray-800">₹{consultant.consultationFee}</div>
+          </div>
+          <div className="bg-orange-50 rounded-lg p-3">
+            <div className="text-orange-600 font-semibold">Location</div>
+            <div className="text-gray-800">{consultant.city}</div>
+          </div>
+        </div>
+
+        {/* Education & Languages */}
+        <div className="mb-4">
+          <div className="text-xs text-gray-600 mb-1">Education</div>
+          <div className="text-sm font-medium text-gray-800">{consultant.education}</div>
+          <div className="text-xs text-gray-600 mt-2 mb-1">Languages</div>
+          <div className="flex gap-1">
+            {consultant.languages.map((lang, idx) => (
+              <span key={idx} className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-700">
+                {lang}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Available Slots Preview */}
+        <div className="mb-4">
+          <p className="text-sm font-semibold text-gray-700 mb-2">Today's Available Slots:</p>
+          <div className="flex flex-wrap gap-1">
+            {consultant.availableSlots.slice(0, 6).map(slot => (
+              <span key={slot} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                {slot}
+              </span>
+            ))}
+            {consultant.availableSlots.length > 6 && (
+              <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">
+                +{consultant.availableSlots.length - 6} more
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Achievements */}
+        <div className="mb-4">
+          <div className="flex flex-wrap gap-1">
+            {consultant.achievements.slice(0, 2).map((achievement, idx) => (
+              <span key={idx} className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                🏆 {achievement}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              setSelectedConsultant(consultant)
+              setShowBookingModal(true)
+            }}
+            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 flex items-center justify-center gap-2 font-semibold shadow-lg transform hover:scale-105 transition-all duration-200"
+          >
+            <Calendar className="h-4 w-4" />
+            Book Now
+          </button>
+          <button className="bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors">
+            <MessageSquare className="h-4 w-4" />
+          </button>
+          <button className="bg-gray-100 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-200 transition-colors">
             <Phone className="h-4 w-4" />
-            <span>{consultant.phone}</span>
-          </div>
+          </button>
         </div>
       </div>
-
-      <div className="mt-4">
-        <p className="text-sm font-medium text-gray-700 mb-2">Available Slots Today:</p>
-        <div className="flex flex-wrap gap-2">
-          {consultant.availableSlots.slice(0, 4).map(slot => (
-            <span key={slot} className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-              {slot}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <button
-        onClick={() => {
-          setSelectedConsultant(consultant)
-          setShowBookingModal(true)
-        }}
-        className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2"
-      >
-        <Calendar className="h-4 w-4" />
-        Book Meeting
-      </button>
     </div>
   )
 
