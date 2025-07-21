@@ -441,6 +441,7 @@ export default function Dashboard() {
     ['screener', 'Stock Screener'],
     ['properties', 'Property Management'],
     ['bookings', 'Meeting Bookings'],
+    ['vip', 'VIP Membership'],
     ['performance', 'Performance Monitor'],
     ['promotion', 'Website Promotion'],
     ['market', 'Market Overview'],
