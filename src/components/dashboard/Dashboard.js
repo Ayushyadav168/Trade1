@@ -408,6 +408,9 @@ export default function Dashboard() {
       case 'news':
         return <NewsWidget />;
 
+      case 'vip':
+        return <VIPFeaturesShowcase />;
+
       case 'performance':
         return <PerformanceMonitor />;
 
