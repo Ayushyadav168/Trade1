@@ -24,6 +24,9 @@ import AIGoalTracker from './AIGoalTracker';
 import AIMarketDigest from './AIMarketDigest';
 import AIWatchlist from './AIWatchlist';
 
+// Property Management
+import PropertyManagement from '../property/PropertyManagement';
+
 // Account/KYC
 import KYCStatus from '../KYCStatus';
 import AccountBalance from '../AccountBalance';
