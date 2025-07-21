@@ -398,6 +398,9 @@ export default function Dashboard() {
       case 'news':
         return <NewsWidget />;
 
+      case 'properties':
+        return <PropertyManagement />;
+
       case 'ai':
         return <AIShowcase />;
 
