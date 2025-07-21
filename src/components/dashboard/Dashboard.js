@@ -401,6 +401,9 @@ export default function Dashboard() {
       case 'news':
         return <NewsWidget />;
 
+      case 'bookings':
+        return <MeetingBookingSystem />;
+
       case 'properties':
         return <PropertyManagement />;
 
