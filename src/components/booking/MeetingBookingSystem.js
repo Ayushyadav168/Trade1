@@ -3,75 +3,163 @@
 import React, { useState, useEffect } from 'react'
 import { Calendar, Clock, User, Phone, Mail, MapPin, MessageSquare, CheckCircle, AlertCircle, Filter } from 'lucide-react'
 
-// Mock data for available slots and consultants
-const mockConsultants = [
-  {
-    id: 'CONS001',
-    name: 'Rajesh Kumar',
-    type: 'Trading Expert',
-    specialization: 'Stock Trading & Portfolio Management',
-    rating: 4.8,
-    experience: '8+ years',
-    phone: '+91-9876543210',
-    email: 'rajesh@tradepro.com',
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
-    availableSlots: ['10:00', '11:00', '14:00', '15:00', '16:00']
-  },
-  {
-    id: 'CONS002',
-    name: 'Priya Sharma',
-    type: 'Property Expert',
-    specialization: 'Real Estate Investment & Property Management',
-    rating: 4.9,
-    experience: '10+ years',
-    phone: '+91-9876543211',
-    email: 'priya@tradepro.com',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
-    availableSlots: ['09:00', '10:00', '11:00', '13:00', '14:00', '15:00']
-  },
-  {
-    id: 'CONS003',
-    name: 'Amit Singh',
-    type: 'Investment Advisor',
-    specialization: 'Mutual Funds & ETF Investment',
-    rating: 4.7,
-    experience: '6+ years',
-    phone: '+91-9876543212',
-    email: 'amit@tradepro.com',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80',
-    availableSlots: ['10:00', '11:00', '12:00', '15:00', '16:00', '17:00']
-  }
-]
+// Enhanced mock data for 100+ consultants and expanded booking system
+const generateExtensiveConsultantData = () => {
+  const firstNames = [
+    'Rajesh', 'Priya', 'Amit', 'Sneha', 'Vikram', 'Anita', 'Suresh', 'Kavya', 'Rohit', 'Deepika',
+    'Arjun', 'Pooja', 'Karthik', 'Nisha', 'Varun', 'Ritu', 'Manish', 'Shreya', 'Aditya', 'Meera',
+    'Sanjay', 'Divya', 'Ravi', 'Sunita', 'Ashish', 'Neha', 'Prakash', 'Swati', 'Rahul', 'Anjali',
+    'Krishna', 'Madhuri', 'Vinod', 'Preeti', 'Naveen', 'Rekha', 'Santosh', 'Vidya', 'Manoj', 'Seema',
+    'Rajiv', 'Geeta', 'Sunil', 'Lata', 'Mukesh', 'Kiran', 'Dinesh', 'Vandana', 'Ramesh', 'Shobha'
+  ];
+  
+  const lastNames = [
+    'Kumar', 'Sharma', 'Singh', 'Patel', 'Reddy', 'Gupta', 'Nair', 'Iyer', 'Agarwal', 'Joshi',
+    'Mehta', 'Malhotra', 'Rao', 'Bansal', 'Kapoor', 'Saxena', 'Tiwari', 'Das', 'Kulkarni', 'Sinha',
+    'Verma', 'Mishra', 'Pandey', 'Chauhan', 'Jain', 'Shah', 'Ghosh', 'Pillai', 'Bhat', 'Menon'
+  ];
 
-const mockBookings = [
-  {
-    id: 'BOOK001',
-    consultantId: 'CONS001',
-    consultantName: 'Rajesh Kumar',
-    type: 'Trading Consultation',
-    date: '2024-07-25',
-    time: '10:00',
-    status: 'Confirmed',
-    clientName: 'John Doe',
-    clientPhone: '+91-9876543220',
-    clientEmail: 'john@example.com',
-    notes: 'Portfolio review and investment strategy discussion'
-  },
-  {
-    id: 'BOOK002',
-    consultantId: 'CONS002',
-    consultantName: 'Priya Sharma',
-    type: 'Property Visit',
-    date: '2024-07-26',
-    time: '14:00',
-    status: 'Confirmed',
-    clientName: 'Jane Smith',
-    clientPhone: '+91-9876543221',
-    clientEmail: 'jane@example.com',
-    notes: 'Property viewing for 3BHK apartment in Bandra',
-    location: 'Bandra West, Mumbai'
+  const consultantTypes = [
+    'Trading Expert', 'Investment Advisor', 'Property Expert', 'Mutual Fund Specialist', 
+    'ETF Specialist', 'Derivatives Expert', 'Technical Analyst', 'Fundamental Analyst',
+    'Portfolio Manager', 'Risk Management Expert', 'Commodity Expert', 'Forex Specialist',
+    'Real Estate Advisor', 'Tax Planning Expert', 'Retirement Planning Expert', 'Insurance Advisor'
+  ];
+
+  const specializations = [
+    'Stock Trading & Portfolio Management', 'Real Estate Investment & Property Management',
+    'Mutual Funds & ETF Investment', 'Derivatives & Options Trading', 'Technical Analysis & Chart Patterns',
+    'Fundamental Analysis & Value Investing', 'Risk Management & Portfolio Optimization',
+    'Commodity Trading & Precious Metals', 'Currency Trading & Global Markets',
+    'Tax-Efficient Investment Strategies', 'Retirement & Pension Planning',
+    'Insurance & Health Investment Plans', 'Cryptocurrency & Digital Assets',
+    'ESG & Sustainable Investing', 'International Markets & Global Funds',
+    'IPO Analysis & New Issue Investments', 'Debt Instruments & Fixed Income',
+    'Alternative Investments & REITs', 'Small Cap & Mid Cap Specialization',
+    'High Net Worth Investment Strategies'
+  ];
+
+  const cities = ['Mumbai', 'Bangalore', 'Delhi', 'Chennai', 'Hyderabad', 'Pune', 'Kolkata', 'Ahmedabad'];
+  
+  const timeSlots = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00'];
+
+  const consultants = [];
+
+  for (let i = 1; i <= 150; i++) {
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    const name = `${firstName} ${lastName}`;
+    const type = consultantTypes[Math.floor(Math.random() * consultantTypes.length)];
+    const specialization = specializations[Math.floor(Math.random() * specializations.length)];
+    const city = cities[Math.floor(Math.random() * cities.length)];
+    const experience = Math.floor(Math.random() * 15 + 3);
+    const rating = (Math.random() * 1 + 4).toFixed(1);
+    
+    // Generate available slots (6-12 slots per consultant)
+    const numSlots = Math.floor(Math.random() * 7 + 6);
+    const availableSlots = [];
+    const shuffledSlots = [...timeSlots].sort(() => 0.5 - Math.random());
+    for (let j = 0; j < numSlots; j++) {
+      availableSlots.push(shuffledSlots[j]);
+    }
+    availableSlots.sort();
+
+    const consultant = {
+      id: `CONS${String(i).padStart(3, '0')}`,
+      name: name,
+      type: type,
+      specialization: specialization,
+      rating: parseFloat(rating),
+      experience: `${experience}+ years`,
+      phone: `+91-98765${String(Math.floor(Math.random() * 90000) + 10000)}`,
+      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@tradepro.com`,
+      image: `https://images.unsplash.com/photo-${Math.random() > 0.5 ? '1560250097' : '1573496359'}-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80`,
+      availableSlots: availableSlots,
+      city: city,
+      languages: ['English', 'Hindi', Math.random() > 0.6 ? 'Tamil' : Math.random() > 0.5 ? 'Telugu' : 'Marathi'],
+      education: Math.random() > 0.7 ? 'MBA Finance, CFA' : Math.random() > 0.5 ? 'MBA, FRM' : 'M.Com, NISM Certified',
+      consultationFee: Math.floor(Math.random() * 3000 + 1000), // ₹1000-₹4000
+      successRate: Math.floor(Math.random() * 15 + 85), // 85-100%
+      clientsServed: Math.floor(Math.random() * 2000 + 100), // 100-2100 clients
+      totalExperience: `${experience} years in ${type.toLowerCase()}`,
+      achievements: [
+        'Top Performer 2023',
+        'Client Satisfaction Award',
+        'Excellence in Advisory',
+        '1000+ Happy Clients'
+      ].slice(0, Math.floor(Math.random() * 3 + 2)),
+      availability: Math.random() > 0.2 ? 'Available Today' : 'Available Tomorrow',
+      premium: Math.random() > 0.8 ? true : false,
+      verified: Math.random() > 0.1 ? true : false
+    };
+
+    consultants.push(consultant);
   }
-]
+
+  return consultants;
+};
+
+const mockConsultants = generateExtensiveConsultantData();
+
+// Enhanced mock bookings with more comprehensive data
+const generateExtensiveBookingData = () => {
+  const bookingTypes = ['Trading Consultation', 'Property Visit', 'Investment Planning', 'Portfolio Review', 'Risk Assessment', 'Tax Planning'];
+  const statuses = ['Confirmed', 'Pending', 'Completed', 'Cancelled', 'Rescheduled'];
+  const clientNames = [
+    'John Doe', 'Jane Smith', 'Robert Johnson', 'Emily Davis', 'Michael Brown',
+    'Sarah Wilson', 'David Miller', 'Lisa Garcia', 'James Rodriguez', 'Maria Martinez',
+    'Christopher Lee', 'Amanda Taylor', 'Daniel Anderson', 'Jessica Thomas', 'Matthew Jackson'
+  ];
+
+  const bookings = [];
+  const today = new Date();
+
+  for (let i = 1; i <= 200; i++) {
+    // Generate random date within last 30 days and next 60 days
+    const randomDays = Math.floor(Math.random() * 90 - 30);
+    const bookingDate = new Date(today);
+    bookingDate.setDate(today.getDate() + randomDays);
+
+    const consultant = mockConsultants[Math.floor(Math.random() * mockConsultants.length)];
+    const bookingType = bookingTypes[Math.floor(Math.random() * bookingTypes.length)];
+    const status = statuses[Math.floor(Math.random() * statuses.length)];
+    const clientName = clientNames[Math.floor(Math.random() * clientNames.length)];
+    
+    const booking = {
+      id: `BOOK${String(i).padStart(3, '0')}`,
+      consultantId: consultant.id,
+      consultantName: consultant.name,
+      consultantType: consultant.type,
+      type: bookingType,
+      date: bookingDate.toISOString().split('T')[0],
+      time: consultant.availableSlots[Math.floor(Math.random() * consultant.availableSlots.length)],
+      status: status,
+      clientName: clientName,
+      clientPhone: `+91-98765${String(Math.floor(Math.random() * 90000) + 10000)}`,
+      clientEmail: `${clientName.toLowerCase().replace(' ', '.')}@example.com`,
+      notes: bookingType === 'Property Visit' ? 
+        `Property viewing for ${Math.random() > 0.5 ? '3BHK apartment' : '2BHK flat'} in ${consultant.city}` :
+        bookingType === 'Investment Planning' ?
+        'Comprehensive investment strategy discussion' :
+        `${bookingType} session with detailed analysis`,
+      location: bookingType === 'Property Visit' ? 
+        `${consultant.city} Premium Location` : 
+        `TradePro Office, ${consultant.city}`,
+      duration: Math.floor(Math.random() * 60 + 30), // 30-90 minutes
+      meetingMode: Math.random() > 0.4 ? 'In-Person' : Math.random() > 0.5 ? 'Video Call' : 'Phone Call',
+      consultationFee: consultant.consultationFee,
+      paymentStatus: status === 'Confirmed' ? 'Paid' : status === 'Pending' ? 'Pending' : 'N/A',
+      rating: status === 'Completed' ? Math.floor(Math.random() * 2 + 4) : null, // 4-5 stars for completed
+      feedback: status === 'Completed' ? 'Excellent consultation with valuable insights' : null
+    };
+
+    bookings.push(booking);
+  }
+
+  return bookings.sort((a, b) => new Date(b.date) - new Date(a.date));
+};
+
+const mockBookings = generateExtensiveBookingData();
 
 export default function MeetingBookingSystem() {
   const [activeTab, setActiveTab] = useState('book') // book, manage
