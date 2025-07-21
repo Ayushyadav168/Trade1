@@ -34,6 +34,9 @@ import MeetingBookingSystem from '../booking/MeetingBookingSystem';
 import PerformanceMonitor from '../performance/PerformanceMonitor';
 import WebsitePromotion from '../promotion/WebsitePromotion';
 
+// VIP Features
+import VIPFeaturesShowcase from '../vip/VIPFeaturesShowcase';
+
 // Account/KYC
 import KYCStatus from '../KYCStatus';
 import AccountBalance from '../AccountBalance';
