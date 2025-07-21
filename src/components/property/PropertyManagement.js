@@ -3,101 +3,123 @@
 import React, { useState, useEffect } from 'react'
 import { Home, MapPin, Calendar, DollarSign, User, Star, Filter, Search, Eye, Heart, TrendingUp, Phone, Mail } from 'lucide-react'
 
-// Mock AMF-like data source for properties
-const mockPropertyData = [
-  {
-    id: 'PRP001',
-    title: 'Luxury 3BHK Apartment',
-    location: 'Bandra West, Mumbai',
-    price: 85000000,
-    rentPrice: 85000,
-    type: 'Apartment',
-    bhk: '3 BHK',
-    sqft: 1250,
-    status: 'Available',
-    images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'],
-    amenities: ['Swimming Pool', 'Gym', 'Parking', 'Security', 'Garden'],
-    description: 'Spacious 3BHK apartment with modern amenities and sea view.',
-    developer: 'Lodha Group',
-    possessionDate: '2024-12-01',
-    roi: 8.5,
-    appreciation: 15.2,
-    agent: {
-      name: 'Rajesh Kumar',
-      phone: '+91-9876543210',
-      email: 'rajesh@properties.com'
-    }
-  },
-  {
-    id: 'PRP002',
-    title: 'Modern 2BHK Flat',
-    location: 'Whitefield, Bangalore',
-    price: 45000000,
-    rentPrice: 35000,
-    type: 'Apartment',
-    bhk: '2 BHK',
-    sqft: 980,
-    status: 'Available',
-    images: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'],
-    amenities: ['Gym', 'Parking', 'Security', 'Clubhouse', 'Garden'],
-    description: 'Contemporary 2BHK flat in tech hub with excellent connectivity.',
-    developer: 'Brigade Group',
-    possessionDate: '2025-03-01',
-    roi: 7.8,
-    appreciation: 12.5,
-    agent: {
-      name: 'Priya Sharma',
-      phone: '+91-9876543211',
-      email: 'priya@properties.com'
-    }
-  },
-  {
-    id: 'PRP003',
-    title: 'Spacious 4BHK Villa',
-    location: 'Gurgaon, Delhi NCR',
-    price: 125000000,
-    rentPrice: 120000,
-    type: 'Villa',
-    bhk: '4 BHK',
-    sqft: 2500,
-    status: 'Available',
-    images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'],
-    amenities: ['Private Pool', 'Garden', 'Parking', 'Security', 'Terrace'],
-    description: 'Luxurious 4BHK villa with private amenities and premium location.',
-    developer: 'DLF Limited',
-    possessionDate: '2024-10-15',
-    roi: 9.2,
-    appreciation: 18.3,
-    agent: {
-      name: 'Amit Singh',
-      phone: '+91-9876543212',
-      email: 'amit@properties.com'
-    }
-  },
-  {
-    id: 'PRP004',
-    title: 'Premium 1BHK Studio',
-    location: 'Koramangala, Bangalore',
-    price: 25000000,
-    rentPrice: 25000,
-    type: 'Studio',
-    bhk: '1 BHK',
-    sqft: 650,
-    status: 'Available',
-    images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'],
-    amenities: ['Gym', 'Parking', 'Security', 'Co-working'],
-    description: 'Modern studio apartment perfect for young professionals.',
-    developer: 'Prestige Group',
-    possessionDate: '2024-08-01',
-    roi: 6.5,
-    appreciation: 10.8,
-    agent: {
-      name: 'Sneha Patel',
-      phone: '+91-9876543213',
-      email: 'sneha@properties.com'
-    }
+// Enhanced mock AMF-like data source with 100+ premium properties
+const generateExtensivePropertyData = () => {
+  const locations = [
+    'Bandra West, Mumbai', 'Andheri East, Mumbai', 'Powai, Mumbai', 'Lower Parel, Mumbai', 'Worli, Mumbai',
+    'Juhu, Mumbai', 'Versova, Mumbai', 'Malad West, Mumbai', 'Goregaon East, Mumbai', 'Thane West, Mumbai',
+    'Whitefield, Bangalore', 'Koramangala, Bangalore', 'Indiranagar, Bangalore', 'Hebbal, Bangalore', 'Electronic City, Bangalore',
+    'HSR Layout, Bangalore', 'Marathahalli, Bangalore', 'JP Nagar, Bangalore', 'Rajajinagar, Bangalore', 'Yelahanka, Bangalore',
+    'Gurgaon Sector 45, Delhi NCR', 'Gurgaon Sector 56, Delhi NCR', 'Noida Sector 62, Delhi NCR', 'Faridabad, Delhi NCR', 'Greater Noida, Delhi NCR',
+    'DLF Phase 1, Delhi NCR', 'Cyber City, Delhi NCR', 'MG Road, Gurgaon', 'Golf Course Road, Gurgaon', 'Sohna Road, Gurgaon',
+    'Hitech City, Hyderabad', 'Kondapur, Hyderabad', 'Gachibowli, Hyderabad', 'Jubilee Hills, Hyderabad', 'Banjara Hills, Hyderabad',
+    'Madhapur, Hyderabad', 'Kukatpally, Hyderabad', 'Miyapur, Hyderabad', 'Secunderabad, Hyderabad', 'Kompally, Hyderabad',
+    'Anna Nagar, Chennai', 'T Nagar, Chennai', 'Adyar, Chennai', 'Velachery, Chennai', 'Porur, Chennai',
+    'OMR, Chennai', 'Thoraipakkam, Chennai', 'Sholinganallur, Chennai', 'Tambaram, Chennai', 'Chrompet, Chennai',
+    'Viman Nagar, Pune', 'Hinjewadi, Pune', 'Baner, Pune', 'Wakad, Pune', 'Aundh, Pune',
+    'Kharadi, Pune', 'Magarpatta City, Pune', 'Koregaon Park, Pune', 'Camp Area, Pune', 'Hadapsar, Pune'
+  ];
+
+  const propertyTypes = ['Apartment', 'Villa', 'Studio', 'Penthouse', 'Townhouse', 'Duplex'];
+  const bhkTypes = ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '5 BHK', '6+ BHK'];
+  const developers = [
+    'Lodha Group', 'Brigade Group', 'DLF Limited', 'Prestige Group', 'Godrej Properties',
+    'Sobha Realty', 'Phoenix Mills', 'Oberoi Realty', 'Hiranandani Group', 'Mahindra Lifespace',
+    'Puravankara', 'Embassy Group', 'Tata Housing', 'Shapoorji Pallonji', 'L&T Realty'
+  ];
+  
+  const amenitiesList = [
+    ['Swimming Pool', 'Gym', 'Parking', 'Security', 'Garden', 'Clubhouse'],
+    ['Gym', 'Parking', 'Security', 'Clubhouse', 'Garden', 'Play Area'],
+    ['Private Pool', 'Garden', 'Parking', 'Security', 'Terrace', 'Home Theater'],
+    ['Swimming Pool', 'Spa', 'Gym', 'Parking', 'Security', 'Concierge'],
+    ['Gym', 'Parking', 'Security', 'Co-working', 'Cafe', 'Rooftop'],
+    ['Swimming Pool', 'Tennis Court', 'Gym', 'Parking', 'Security', 'Golf Course'],
+    ['Infinity Pool', 'Sky Lounge', 'Gym', 'Valet Parking', '24/7 Security', 'Private Elevator']
+  ];
+
+  const agentNames = [
+    'Rajesh Kumar', 'Priya Sharma', 'Amit Singh', 'Sneha Patel', 'Vikram Reddy',
+    'Anita Gupta', 'Suresh Nair', 'Kavya Iyer', 'Rohit Agarwal', 'Deepika Joshi',
+    'Arjun Mehta', 'Pooja Malhotra', 'Karthik Rao', 'Nisha Bansal', 'Varun Kapoor',
+    'Ritu Saxena', 'Manish Tiwari', 'Shreya Das', 'Aditya Kulkarni', 'Meera Sinha'
+  ];
+
+  const properties = [];
+  
+  for (let i = 1; i <= 120; i++) {
+    const location = locations[Math.floor(Math.random() * locations.length)];
+    const city = location.split(',')[1].trim();
+    const type = propertyTypes[Math.floor(Math.random() * propertyTypes.length)];
+    const bhk = bhkTypes[Math.floor(Math.random() * bhkTypes.length)];
+    const developer = developers[Math.floor(Math.random() * developers.length)];
+    const amenities = amenitiesList[Math.floor(Math.random() * amenitiesList.length)];
+    const agent = agentNames[Math.floor(Math.random() * agentNames.length)];
+    
+    const basePrice = city === 'Mumbai' ? 
+      Math.random() * 100000000 + 30000000 : // 3Cr - 13Cr for Mumbai
+      city === 'Bangalore' || city === 'Delhi NCR' ? 
+      Math.random() * 80000000 + 20000000 : // 2Cr - 10Cr for Bangalore/NCR
+      Math.random() * 60000000 + 15000000; // 1.5Cr - 7.5Cr for other cities
+    
+    const sqft = type === 'Studio' ? 
+      Math.random() * 400 + 350 : // 350-750 sqft
+      type === 'Villa' || type === 'Penthouse' ? 
+      Math.random() * 2000 + 2000 : // 2000-4000 sqft
+      Math.random() * 1500 + 600; // 600-2100 sqft
+    
+    const rentPrice = Math.floor(basePrice * 0.0003 + Math.random() * basePrice * 0.0002);
+    
+    const property = {
+      id: `PRP${String(i).padStart(3, '0')}`,
+      title: `${type === 'Studio' ? 'Premium' : type === 'Villa' ? 'Luxury' : type === 'Penthouse' ? 'Ultra-Luxury' : 'Modern'} ${bhk} ${type}`,
+      location: location,
+      price: Math.floor(basePrice),
+      rentPrice: rentPrice,
+      type: type,
+      bhk: bhk,
+      sqft: Math.floor(sqft),
+      status: Math.random() > 0.1 ? 'Available' : Math.random() > 0.5 ? 'Under Construction' : 'Sold Out',
+      images: [
+        `https://images.unsplash.com/photo-${1560000000000 + Math.floor(Math.random() * 100000000)}?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80`
+      ],
+      amenities: amenities,
+      description: `${type === 'Villa' ? 'Spacious luxury villa' : type === 'Penthouse' ? 'Ultra-premium penthouse' : type === 'Studio' ? 'Contemporary studio apartment' : 'Modern apartment'} with world-class amenities in prime ${city} location. ${type === 'Villa' ? 'Private gardens and premium finishes throughout.' : 'Excellent connectivity and lifestyle amenities.'}`,
+      developer: developer,
+      possessionDate: new Date(Date.now() + Math.random() * 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      roi: Math.random() * 6 + 5, // 5-11% ROI
+      appreciation: Math.random() * 15 + 8, // 8-23% appreciation
+      rating: Math.random() * 1 + 4, // 4-5 star rating
+      views: Math.floor(Math.random() * 1000 + 100), // 100-1100 views
+      agent: {
+        name: agent,
+        phone: `+91-98765${String(Math.floor(Math.random() * 90000) + 10000)}`,
+        email: `${agent.toLowerCase().replace(' ', '.')}@properties.com`,
+        rating: Math.random() * 1 + 4,
+        experience: Math.floor(Math.random() * 15 + 2) + '+ years',
+        speciality: Math.random() > 0.5 ? 'Luxury Properties' : Math.random() > 0.5 ? 'Investment Properties' : 'Residential Properties'
+      },
+      features: [
+        'Premium Location',
+        'High ROI Potential',
+        'Ready to Move',
+        'Bank Loan Available',
+        'RERA Approved'
+      ],
+      pricePerSqft: Math.floor(basePrice / sqft),
+      floorPlan: `${bhk} configuration with optimized space utilization`,
+      legalStatus: 'Clear Title',
+      emi: Math.floor(basePrice * 0.01), // Approximate EMI
+      category: Math.random() > 0.7 ? 'Premium' : Math.random() > 0.5 ? 'Luxury' : 'Standard'
+    };
+    
+    properties.push(property);
   }
-]
+  
+  return properties;
+};
+
+const mockPropertyData = generateExtensivePropertyData();
 
 export default function PropertyManagement() {
   const [properties, setProperties] = useState(mockPropertyData)
